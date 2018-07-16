@@ -1,6 +1,7 @@
 package com.example.administrator.testchat;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -29,17 +30,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
     private int SIGN_IN_REQUEST_CODE;
     private FirebaseListAdapter<ChatMessage> adapter;
+    private ChatMessage model;
+    private ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-
+        listView = (ListView) findViewById( R.id.list_of_messages );
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
             startActivityForResult(
@@ -72,7 +79,7 @@ public class MainActivity extends AppCompatActivity{
                     // Read the input field and push a new instance
                     // of ChatMessage to the Firebase database
                     FirebaseDatabase.getInstance()
-                            .getReference()
+                            .getReference("contacts")
                             .push()
                             .setValue(new ChatMessage(input.getText().toString(),
                                     FirebaseAuth.getInstance()
@@ -89,48 +96,63 @@ public class MainActivity extends AppCompatActivity{
 
     }
     private void displayChatMessages() {
-        ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
+//        ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
+//        Query query=FirebaseDatabase.getInstance().getReference();
+//        FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>()
+//                .setQuery(query,  ChatMessage.class)
+//                .setLayout(R.layout.message)
+//                .build();
+//        adapter = new FirebaseListAdapter<ChatMessage>(options) {
+//            @Override
+//            protected void populateView(View v, ChatMessage model, int position) {
+//                // Get references to the views of message.xml
+//                TextView messageText = (TextView)v.findViewById(R.id.message_text);
+//                TextView messageUser = (TextView)v.findViewById(R.id.message_user);
+//                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
+//
+//                // Set their text
+//                messageText.setText(model.getMessageText());
+//                messageUser.setText(model.getMessageUser());
+//
+//                // Format the date before showing it
+//                messageTime.setText( DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
+//                        model.getMessageTime()));
+//                 Log.i( "messageText" , String.valueOf( messageText ) );
+//            }
+//        };
+//        listOfMessages.setAdapter(adapter);
+        List<String> dataList = new ArrayList<String>();
+        for (int i = 0; i < 20; i++) {
+            dataList.add("test" + i);
+        }
 
 
-//.orderByChild("user/name").equalTo("write")
-        Query query=FirebaseDatabase.getInstance().getReference();
-        FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>()
-                .setQuery(query,  ChatMessage.class)
-                .setLayout(R.layout.message)
-                .build();
-
-        adapter = new FirebaseListAdapter<ChatMessage>(options) {
-
-
-
-//        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
-//                R.layout.message, FirebaseDatabase.getInstance().getReference() ) {
-
-
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>( this,
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1
+//                R.layout.message
+        );
+        listView.setAdapter( adapter );
+        DatabaseReference reference_contacts = FirebaseDatabase.getInstance().getReference( "contacts" );
+        reference_contacts.addValueEventListener( new ValueEventListener() {
             @Override
-            protected void populateView(View v, ChatMessage model, int position) {
-                // Get references to the views of message.xml
-                TextView messageText = (TextView)v.findViewById(R.id.message_text);
-                TextView messageUser = (TextView)v.findViewById(R.id.message_user);
-                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
-
-                // Set their text
-                messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
-
-                // Format the date before showing it
-                messageTime.setText( DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                        model.getMessageTime()));
-                 Log.i( "messageText" , String.valueOf( messageText ) );
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                adapter.clear();
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    adapter.add( ds.child( "messageText" ).getValue().toString() );
+                    adapter.add( ds.child( "messageUser" ).getValue().toString() );
+//                    TextView messageTime = (TextView)findViewById(R.id.message_time);
+//                    messageTime.setText( DateFormat.format("dd-MM-yyyy (HH:mm:ss)",model.getMessageTime()));
+                    adapter.add( ds.child( "messageTime" ).getValue().toString() );
+                }
             }
-        };
-
-        listOfMessages.setAdapter(adapter);
-
-
-
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        } );
+      //  listView.setSelection(adapter.getCount()-1);
     }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
