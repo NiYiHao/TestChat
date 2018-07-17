@@ -39,14 +39,21 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity{
     private int SIGN_IN_REQUEST_CODE;
     private FirebaseListAdapter<ChatMessage> adapter;
+    private ChatAdapter Cada;
     private ChatMessage model;
     private ListView listView;
+    private ArrayList<ChatMessage> CM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+        Cada = new ChatAdapter(this,CM);
+
+
         listView = (ListView) findViewById( R.id.list_of_messages );
+
+
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
             startActivityForResult(
@@ -121,10 +128,8 @@ public class MainActivity extends AppCompatActivity{
 //            }
 //        };
 //        listOfMessages.setAdapter(adapter);
-        List<String> dataList = new ArrayList<String>();
-        for (int i = 0; i < 20; i++) {
-            dataList.add("test" + i);
-        }
+
+
 
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>( this,
@@ -135,6 +140,8 @@ public class MainActivity extends AppCompatActivity{
         listView.setAdapter( adapter );
         DatabaseReference reference_contacts = FirebaseDatabase.getInstance().getReference( "contacts" );
         reference_contacts.addValueEventListener( new ValueEventListener() {
+
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 adapter.clear();
