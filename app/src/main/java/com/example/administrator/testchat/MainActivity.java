@@ -59,28 +59,31 @@ public class MainActivity extends AppCompatActivity{
     private ListView listView;
     private Button fab;
 
+    private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseDatabase fireBD;
+
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String userPhotpUrl;
     private Bitmap userPic;
     private ImageView testImg;
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseDatabase fireBD;
+
 
 
 //OnCreate----------------------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_main );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
 //資料設定區----------------------------------------------------------------------------------------------------------------------
+
+
         listView = findViewById( R.id.list_of_messages );
-        testImg = findViewById( R.id.imageView );
 
 //OnCreate程式區----------------------------------------------------------------------------------------------------------------------
 //Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
-//        if (user == null) {
+//        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
 //            // Start sign in/sign up activity
 //            startActivityForResult(
 //                    AuthUI.getInstance()
@@ -92,42 +95,84 @@ public class MainActivity extends AppCompatActivity{
 //            // User is already signed in. Therefore, display
 //            // a welcome Toast
 //            Toast.makeText(this,
-//                    "Welcome " + user.getDisplayName(),
+//                    "Welcome " + FirebaseAuth.getInstance()
+//                            .getCurrentUser()
+//                            .getDisplayName(),
 //                    Toast.LENGTH_LONG)
 //                    .show();
-//            //取得使用者圖片
-//            userPhotpUrl = user.getPhotoUrl().toString();
-//            Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
-//
-//            new AsyncTask<String, Void, Bitmap>() {
-//                @Override
-//                protected void onPostExecute(Bitmap bitmap) {
-//                    userPic = bitmap;
-//                    //testImg.setImageBitmap(userPic);
-//                    super.onPostExecute(bitmap);
+//        auth = FirebaseAuth.getInstance();
+//        authStateListener = new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+//                    startActivityForResult( new Intent( MainActivity.this, LoginActivity.class ), 1 );
+//                } else {
+//                    Toast.makeText( MainActivity.this,
+//                            "Welcome " + FirebaseAuth.getInstance()
+//                                    .getCurrentUser()
+//                                    .getDisplayName(),
+//                            Toast.LENGTH_LONG )
+//                            .show();
 //                }
+//            }
+//        };
 //
-//                @Override
-//                protected Bitmap doInBackground(String... strings) {
-//                    try {
-//                        URL url = new URL(strings[0]);
-//                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//                        conn.setDoInput(true);
-//                        conn.connect();
-//                        InputStream is = conn.getInputStream();
-//                        Bitmap bitmap = BitmapFactory.decodeStream(is);
-//                        return bitmap;
-//                    } catch (MalformedURLException e) {
-//                        e.printStackTrace();
-//                        return null;
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        return null;
-//                    }
-//                }
-//            }.execute(userPhotpUrl);
-//            testImg.setImageBitmap(userPic);
 //
+//
+//        listView = findViewById(R.id.list_of_messages);
+//        testImg = findViewById(R.id.imageView);
+
+//OnCreate程式區----------------------------------------------------------------------------------------------------------------------
+//Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
+        // if (user == null) {
+        //     // Start sign in/sign up activity
+        //     startActivityForResult(
+        //             AuthUI.getInstance()
+        //                     .createSignInIntentBuilder()
+        //                     .build(),
+        //             SIGN_IN_REQUEST_CODE
+        //     );
+        // } else {
+        //     // User is already signed in. Therefore, display
+        //     // a welcome Toast
+        //     Toast.makeText(this,
+        //             "Welcome " + user.getDisplayName(),
+        //             Toast.LENGTH_LONG)
+        //             .show();
+        //     //取得使用者圖片
+        //     userPhotpUrl = user.getPhotoUrl().toString();
+        //     Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
+        //
+        //     new AsyncTask<String, Void, Bitmap>() {
+        //         @Override
+        //         protected void onPostExecute(Bitmap bitmap) {
+        //             userPic = bitmap;
+        //             //testImg.setImageBitmap(userPic);
+        //             super.onPostExecute(bitmap);
+        //         }
+        //
+        //         @Override
+        //         protected Bitmap doInBackground(String... strings) {
+        //             try {
+        //                 URL url = new URL(strings[0]);
+        //                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        //                 conn.setDoInput(true);
+        //                 conn.connect();
+        //                 InputStream is = conn.getInputStream();
+        //                 Bitmap bitmap = BitmapFactory.decodeStream(is);
+        //                 return bitmap;
+        //             } catch (MalformedURLException e) {
+        //                 e.printStackTrace();
+        //                 return null;
+        //             } catch (IOException e) {
+        //                 e.printStackTrace();
+        //                 return null;
+        //             }
+        //         }
+        //     }.execute(userPhotpUrl);
+        //     testImg.setImageBitmap(userPic);
+
+
 //            listView = findViewById(R.id.list_of_messages);
 
 //OnCreate程式區----------------------------------------------------------------------------------------------------------------------
@@ -149,48 +194,48 @@ public class MainActivity extends AppCompatActivity{
 //                            .getDisplayName(),
 //                    Toast.LENGTH_LONG)
 //                    .show();
-        auth = FirebaseAuth.getInstance();
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                    startActivityForResult( new Intent( MainActivity.this, LoginActivity.class ), 1 );
-                } else {
-                    Toast.makeText( MainActivity.this,
-                            "Welcome " + FirebaseAuth.getInstance()
-                                    .getCurrentUser()
-                                    .getDisplayName(),
-                            Toast.LENGTH_LONG )
-                            .show();
+            auth = FirebaseAuth.getInstance();
+            authStateListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                        startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), 1);
+                    } else {
+                        Toast.makeText(MainActivity.this,
+                                "Welcome " + FirebaseAuth.getInstance()
+                                        .getCurrentUser()
+                                        .getDisplayName(),
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
-            }
-        };
+            };
+
 
 
 //發送訊息按鈕----------------------------------------------------------------------------------------------------------------------
-        // Load chat room contents
-        fab = findViewById( R.id.fab );
-        fab.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText input = (EditText) findViewById( R.id.input );
-                // Read the input field and push a new instance
-                // of ChatMessage to the Firebase database
-                FirebaseDatabase.getInstance()
-                        .getReference( "contacts" )
-                        .push()
-                        .setValue( new ChatMessage( input.getText().toString(),
-                                user
-                                        .getDisplayName(), userPhotpUrl )
-                        );
-                // Clear the input
-                input.setText( "" );
-            }
-        } );
+            // Load chat room contents
+            fab = findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EditText input = (EditText) findViewById(R.id.input);
+                    // Read the input field and push a new instance
+                    // of ChatMessage to the Firebase database
+                    FirebaseDatabase.getInstance()
+                            .getReference("contacts")
+                            .push()
+                            .setValue(new ChatMessage(input.getText().toString(),
+                                    user
+                                            .getDisplayName(), userPhotpUrl)
+                            );
+                    // Clear the input
+                    input.setText("");
+                }
+            });
 
-        displayChatMessages();
+    displayChatMessages();
     }
-
 
 //顯示訊息區----------------------------------------------------------------------------------------------------------------------
     private void displayChatMessages() {

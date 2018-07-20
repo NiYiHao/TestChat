@@ -32,11 +32,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,7 +70,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private int SIGN_IN_REQUEST_CODE;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -80,7 +77,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AlertDialog.Builder builder;
     private Dialog dialog;
     private FirebaseAuth auth;
-    private ImageButton googleLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +108,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById( R.id.login_form );
         mProgressView = findViewById( R.id.login_progress );
-        setGoogleLogin();
     }
 
     private void populateAutoComplete() {
@@ -451,21 +446,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress( false );
         }
     }
-    public void setGoogleLogin(){
-        googleLogin = findViewById( R.id.googleLogin );
-        googleLogin.setOnClickListener( new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
-                    // Start sign in/sign up activity
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .build(),
-                            SIGN_IN_REQUEST_CODE);
+}
 
-                }
-
-            });
-        }
-    }
