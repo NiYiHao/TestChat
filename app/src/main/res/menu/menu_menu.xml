@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_edit_name"
+        android:title="Edit name" />
+    <item
+        android:id="@+id/menu_edit_password"
+        android:title="Change Password" />
+    <item
         android:id="@+id/menu_sign_out"
         android:title="Sign out"
         app:showAsAction="never" />
