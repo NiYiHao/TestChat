@@ -469,6 +469,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         if (requestCode == SIGN_IN_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+                showProgress( true );
                 startActivity( new Intent( LoginActivity.this,MainActivity.class ) );
 
             } else {
