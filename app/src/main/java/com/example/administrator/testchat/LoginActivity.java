@@ -32,20 +32,25 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 /**
  * A login screen that offers login via email/password.
@@ -77,7 +82,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AlertDialog.Builder builder;
     private Dialog dialog;
     private FirebaseAuth auth;
-
+    private ImageButton googlelogin;
+    public int SIGN_IN_REQUEST_CODE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -105,9 +111,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 attemptLogin();
             }
         } );
-
         mLoginFormView = findViewById( R.id.login_form );
         mProgressView = findViewById( R.id.login_progress );
+        googlelogin();
     }
 
     private void populateAutoComplete() {
@@ -446,5 +452,34 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress( false );
         }
     }
-}
+    public void googlelogin(){
+        googlelogin = findViewById( R.id.googlelogin );
+        googlelogin.setOnClickListener( new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult( AuthUI.getInstance().createSignInIntentBuilder( ).build(),SIGN_IN_REQUEST_CODE);
 
+            }
+        } );
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        super.onActivityResult( requestCode, resultCode, data );
+
+        if (requestCode == SIGN_IN_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                startActivity( new Intent( LoginActivity.this,MainActivity.class ) );
+
+            } else {
+                Toast.makeText( this,
+                        "We couldn't sign you in. Please try again later.",
+                        Toast.LENGTH_LONG )
+                        .show();
+
+                // Close the app
+                finish();
+            }
+        }
+    }
+}
