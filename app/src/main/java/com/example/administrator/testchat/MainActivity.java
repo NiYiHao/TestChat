@@ -30,6 +30,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity{
 //----------------------------------------------------------------------------------------------------------------------
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity{
     private Bitmap userPic;
     private String userName;
     private String userEmail;
-    private ImageView testImg;
+   // private ImageView testImg;
 
 
 
@@ -61,59 +64,8 @@ public class MainActivity extends AppCompatActivity{
 
 //資料設定區----------------------------------------------------------------------------------------------------------------------
         listView = findViewById( R.id.list_of_messages );
+       // testImg = findViewById(R.id.imageView2);
 
-//OnCreate程式區----------------------------------------------------------------------------------------------------------------------
-//Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
-        // if (user == null) {
-        //     // Start sign in/sign up activity
-        //     startActivityForResult(
-        //             AuthUI.getInstance()
-        //                     .createSignInIntentBuilder()
-        //                     .build(),
-        //             SIGN_IN_REQUEST_CODE
-        //     );
-        // } else {
-        //     // User is already signed in. Therefore, display
-        //     // a welcome Toast
-        //     Toast.makeText(this,
-        //             "Welcome " + user.getDisplayName(),
-        //             Toast.LENGTH_LONG)
-        //             .show();
-        //     //取得使用者圖片
-        //     userPhotpUrl = user.getPhotoUrl().toString();
-        //     Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
-        //
-        //     new AsyncTask<String, Void, Bitmap>() {
-        //         @Override
-        //         protected void onPostExecute(Bitmap bitmap) {
-        //             userPic = bitmap;
-        //             //testImg.setImageBitmap(userPic);
-        //             super.onPostExecute(bitmap);
-        //         }
-        //
-        //         @Override
-        //         protected Bitmap doInBackground(String... strings) {
-        //             try {
-        //                 URL url = new URL(strings[0]);
-        //                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        //                 conn.setDoInput(true);
-        //                 conn.connect();
-        //                 InputStream is = conn.getInputStream();
-        //                 Bitmap bitmap = BitmapFactory.decodeStream(is);
-        //                 return bitmap;
-        //             } catch (MalformedURLException e) {
-        //                 e.printStackTrace();
-        //                 return null;
-        //             } catch (IOException e) {
-        //                 e.printStackTrace();
-        //                 return null;
-        //             }
-        //         }
-        //     }.execute(userPhotpUrl);
-        //     testImg.setImageBitmap(userPic);
-
-
-//            listView = findViewById(R.id.list_of_messages);
 
 //OnCreate程式區----------------------------------------------------------------------------------------------------------------------
 //Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
@@ -160,6 +112,27 @@ public class MainActivity extends AppCompatActivity{
                             userName = user.getDisplayName();
                             //Log.i("彡ﾟ◉ω◉ )つー☆*", userName);
                         }
+//取得使用者圖片-------------------------------------------------------------------------------------------------------------------------
+                            if (user.getPhotoUrl() != null) {
+                                userPhotpUrl = user.getPhotoUrl().toString();
+                                Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
+                            }else{
+                            //如果沒有就給預設圖片
+                               // userPhotpUrl = "https://firebasestorage.googleapis.com/v0/b/teststorage-32724.appspot.com/o/Photos%2F93137?alt=media&token=0794baad-c875-45ca-8dc5-92cce5766455";
+                                //Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
+                            }
+//                        Picasso.get().load(userPhotpUrl).fetch(new Callback() {
+//                            @Override
+//                            public void onSuccess() {
+//                                Picasso.get().load(userPhotpUrl).into(testImg);
+//                                Picasso.get().setIndicatorsEnabled(true);
+//                            }
+//
+//                            @Override
+//                            public void onError(Exception e) {
+//
+//                            }
+//                        });
                     }
                 }
             };
@@ -206,7 +179,7 @@ public class MainActivity extends AppCompatActivity{
                 TextView messageText = (TextView)v.findViewById(R.id.message_text);
                 TextView messageUser = (TextView)v.findViewById(R.id.message_user);
                 TextView messageTime = (TextView)v.findViewById(R.id.message_time);
-
+                final ImageView userImg = (ImageView)v.findViewById(R.id.imgUserPhoto);
                 // Set their text
                 messageText.setText(model.getMessageText());
                 messageUser.setText(model.getMessageUser());
@@ -214,7 +187,31 @@ public class MainActivity extends AppCompatActivity{
                 // Format the date before showing it
                 messageTime.setText( DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
                         model.getMessageTime()));
-                 Log.i( "messageText" , String.valueOf( messageText ) );
+                 //Log.i( "messageText" , String.valueOf( messageText ) );
+
+
+                 if(model.getUserPhotoUrl() == null){
+                 //    imgurl = "https://firebasestorage.googleapis.com/v0/b/teststorage-32724.appspot.com/o/Photos%2F93137?alt=media&token=0794baad-c875-45ca-8dc5-92cce5766455";
+
+                 }else {
+                     final String imgurl = model.getUserPhotoUrl();
+                     Picasso.get().load(imgurl).fetch(new Callback() {
+                         @Override
+                          public void onSuccess() {
+                             Picasso.get().load(imgurl).fit().centerCrop().into(userImg);
+                             Picasso.get().setIndicatorsEnabled(true);
+
+                         }
+
+
+                         @Override
+                         public void onError(Exception e) {
+
+                         }
+                     });
+                 }
+
+
             }
         };
 //----------------------------------------------------------------------------------------------------------------------
