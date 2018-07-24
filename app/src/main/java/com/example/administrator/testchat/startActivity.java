@@ -23,7 +23,7 @@ public class startActivity extends AppCompatActivity {
             public void run(){
             super.run();
             try{
-                sleep( 5000 );
+                sleep( 4000 );
             }catch(Exception e){
                 e.printStackTrace();
             }finally{

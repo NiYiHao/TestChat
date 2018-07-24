@@ -65,116 +65,84 @@ public class MainActivity extends AppCompatActivity {
 //Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
         auth = FirebaseAuth.getInstance();
 
-                    authStateListener = new FirebaseAuth.AuthStateListener() {
-                        @Override
-                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                                startActivityForResult( new Intent( MainActivity.this, LoginActivity.class ), 1 );
-                            } else {
-                                Toast.makeText( MainActivity.this,
-                                        "Welcome " + FirebaseAuth.getInstance()
-                                                .getCurrentUser()
-                                                .getDisplayName(),
-                                        Toast.LENGTH_LONG )
-                                        .show();
-                                userName = user.getDisplayName();
-                                if(userName != null) {
-                                    // Log.i("彡ﾟ◉ω◉ )つ--==*", userName);
-                                }else {
-                                    userEmail = user.getEmail();
-                                    //  Log.i("彡ﾟ◉ω◉ )つー>>)))", userEmail);
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(userEmail)
-                                            .build();
-                                    user.updateProfile(profileUpdates);
-                                    userName = user.getDisplayName();
-                                    //Log.i("彡ﾟ◉ω◉ )つー☆*", userName);
-                                }
-//取得使用者圖片-------------------------------------------------------------------------------------------------------------------------
-                                if (user.getPhotoUrl() != null) {
-                                    userPhotpUrl = user.getPhotoUrl().toString();
-                                    //  Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
-                                }else{
-                                    //如果沒有就給預設圖片
-                                    // userPhotpUrl = "https://firebasestorage.googleapis.com/v0/b/teststorage-32724.appspot.com/o/Photos%2F93137?alt=media&token=0794baad-c875-45ca-8dc5-92cce5766455";
-                                    //Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
-                                }
-                            }
-                        }
-                    };
-
-
-
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    startActivityForResult( new Intent( MainActivity.this, LoginActivity.class ), 1 );
+                } else {
+                    Toast.makeText( MainActivity.this,
+                            "Welcome " + FirebaseAuth.getInstance()
+                                    .getCurrentUser()
+                                    .getDisplayName(),
+                            Toast.LENGTH_LONG )
+                            .show();
+                    userName = user.getDisplayName();
+                    if (userName != null) {
+                        // Log.i("彡ﾟ◉ω◉ )つ--==*", userName);
+                    } else {
+                        userEmail = user.getEmail();
+                        //  Log.i("彡ﾟ◉ω◉ )つー>>)))", userEmail);
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName( userEmail )
+                                .build();
+                        user.updateProfile( profileUpdates );
+                        userName = user.getDisplayName();
+                        //Log.i("彡ﾟ◉ω◉ )つー☆*", userName);
+                    }
+                }
 
 //發送訊息按鈕----------------------------------------------------------------------------------------------------------------------
-            // Load chat room contents
-            fab = findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    EditText input = (EditText) findViewById(R.id.input);
-                    // Read the input field and push a new instance
-                    // of ChatMessage to the Firebase database
-                    FirebaseDatabase.getInstance()
-                            .getReference("contacts")
-                            .push()
-                            .setValue(new ChatMessage(input.getText().toString(),
-                                    user
-                                            .getDisplayName(), userPhotpUrl)
-                            );
-                    // Clear the input
-                    input.setText("");
-                }
-            });
-
-    displayChatMessages();
-    }
-
-//顯示訊息區----------------------------------------------------------------------------------------------------------------------
-    private void displayChatMessages() {
-        ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
-        Query query=FirebaseDatabase.getInstance().getReference("contacts");
-        FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>()
-                .setQuery(query,  ChatMessage.class)
-                .setLayout(R.layout.message)
-                .build();
-        adapter = new FirebaseListAdapter<ChatMessage>(options) {
-            @Override
-            protected void populateView(View v, ChatMessage model, int position) {
-                // Get references to the views of message.xml
-                TextView messageText = (TextView)v.findViewById(R.id.message_text);
-                TextView messageUser = (TextView)v.findViewById(R.id.message_user);
-                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
-                final ImageView userImg = (ImageView)v.findViewById(R.id.imgUserPhoto);
-                // Set their text
-                messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
-                // Format the date before showing it
-                messageTime.setText( DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                        model.getMessageTime()));
-                 //Log.i( "messageText" , String.valueOf( messageText ) );
-                 if(model.getUserPhotoUrl() == null){
-                 //    imgurl = "https://firebasestorage.googleapis.com/v0/b/teststorage-32724.appspot.com/o/Photos%2F93137?alt=media&token=0794baad-c875-45ca-8dc5-92cce5766455";
-
-                 }else {
-                     final String imgurl = model.getUserPhotoUrl();
-                     Picasso.get().load(imgurl).fetch(new Callback() {
-                         @Override
-                          public void onSuccess() {
-                             Picasso.get().load(imgurl).fit().centerCrop().into(userImg);
-                             Picasso.get().setIndicatorsEnabled(true);
-                         }
-                         @Override
-                         public void onError(Exception e) {
-                         }
-                     });
-                 }
+                // Load chat room contents
+                fab = findViewById( R.id.fab );
+                fab.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        EditText input = (EditText) findViewById( R.id.input );
+                        // Read the input field and push a new instance
+                        // of ChatMessage to the Firebase database
+                        FirebaseDatabase.getInstance()
+                                .getReference( "contacts" )
+                                .push()
+                                .setValue( new ChatMessage( input.getText().toString(),
+                                        user
+                                                .getDisplayName() )
+                                );
+                        // Clear the input
+                        input.setText( "" );
+                    }
+                } );
             }
         };
-//----------------------------------------------------------------------------------------------------------------------
-        listOfMessages.setAdapter(adapter);
-//----------------------------------------------------------------------------------------------------------------------
+        displayChatMessages();
     }
+            //顯示訊息區----------------------------------------------------------------------------------------------------------------------
+            private void displayChatMessages() {
+                ListView listOfMessages = (ListView) findViewById( R.id.list_of_messages );
+                Query query = FirebaseDatabase.getInstance().getReference( "contacts" );
+                FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>()
+                        .setQuery( query, ChatMessage.class )
+                        .setLayout( R.layout.message )
+                        .build();
+                adapter = new FirebaseListAdapter<ChatMessage>( options ) {
+                    @Override
+                    protected void populateView(View v, ChatMessage model, int position) {
+                        // Get references to the views of message.xml
+                        TextView messageText = (TextView) v.findViewById( R.id.message_text );
+                        TextView messageUser = (TextView) v.findViewById( R.id.message_user );
+                        TextView messageTime = (TextView) v.findViewById( R.id.message_time );
+                        // Set their text
+                        messageText.setText( model.getMessageText() );
+                        messageUser.setText( model.getMessageUser() );
+                        // Format the date before showing it
+                        messageTime.setText( DateFormat.format( "dd-MM-yyyy (HH:mm:ss)",
+                                model.getMessageTime() ) );
+                        //Log.i( "messageText" , String.valueOf( messageText ) );
+                    }
+                };
+                listOfMessages.setAdapter( adapter );
+            }
+    //----------------------------------------------------------------------------------------------------------------------
     @Override
     protected void onStart() {
         super.onStart();
@@ -284,11 +252,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).show();
             break;
-
         }
         return true;
     }
-
-
-
 }

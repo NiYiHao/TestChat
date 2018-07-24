@@ -8,12 +8,10 @@ public class ChatMessage {
     private String messageText;
     private String messageUser;
     private long messageTime;
-    private String userPhotoUrl;
 
-    public ChatMessage( String messageText, String messageUser,String userPhotoUrl) {
+    public ChatMessage( String messageText, String messageUser) {
         this.messageText = messageText;
         this.messageUser = messageUser;
-        this.userPhotoUrl = userPhotoUrl;
 
         // Initialize to current time
         messageTime = new Date().getTime();
@@ -22,15 +20,6 @@ public class ChatMessage {
     public ChatMessage(){
 
     }
-
-    public String getUserPhotoUrl() {
-        return userPhotoUrl;
-    }
-
-    public void setUserPhotoUrl(String userPhotoUrl) {
-        this.userPhotoUrl = userPhotoUrl;
-    }
-
     public String getMessageText() {
         return messageText;
     }

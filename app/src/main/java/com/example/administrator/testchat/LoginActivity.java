@@ -36,6 +36,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,6 +49,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
@@ -82,11 +89,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AlertDialog.Builder builder;
     private Dialog dialog;
     private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authStateListener;
     private ImageButton googlelogin;
+    private LoginButton fblogin;
     public int SIGN_IN_REQUEST_CODE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        getSupportActionBar().hide(); //隱藏標題
+        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN); //隱藏狀態
         setContentView( R.layout.activity_login );
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById( R.id.email );
@@ -420,7 +431,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         } );
     }
+    public void facebooklogin() {
 
+    }
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
