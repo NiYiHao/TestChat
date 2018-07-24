@@ -221,14 +221,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         }
                     } )
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Log.e("Nick", "登入失敗，請檢查email/password");
-//                            showProgress(false);
-//                            finish();
-//                        }
-//                    })
+
                     .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -260,41 +253,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     } );
         }
     }
-//   private void register(final String email, final String password) {
-//
-//        builder = new AlertDialog.Builder(LoginActivity.this);
-//                builder.setTitle("登入問題")
-//                .setMessage("登入失敗，請檢查email/password或無此帳號，是否要以此帳號與密碼註冊?")
-//                .setPositiveButton("註冊",new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                auth.createUserWithEmailAndPassword(email, password);
-//                            }
-//                        })
-//                .setNeutralButton( "取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        showProgress( false );
-//                    }
-//                } );
-//                dialog =builder.create();
-//                dialog.show();
-//
-//    }
-//    private void createUser(String email, String password) {
-//        auth.createUserWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(
-//                        new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                String message =
-//                                        task.isSuccessful() ? "註冊成功" : "註冊失敗";//(感謝jiaping網友提醒)
-//                                        builder.setPositiveButton("OK", null);
-//                                dialog =builder.create();
-//                                dialog.show();
-//                            }
-//                        });
-//}
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic

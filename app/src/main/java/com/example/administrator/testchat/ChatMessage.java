@@ -14,6 +14,7 @@ public class ChatMessage {
         this.messageText = messageText;
         this.messageUser = messageUser;
         this.userPhotoUrl = userPhotoUrl;
+
         // Initialize to current time
         messageTime = new Date().getTime();
     }
@@ -53,5 +54,7 @@ public class ChatMessage {
     public void setMessageTime(long messageTime) {
         this.messageTime = messageTime;
     }
+
+
 }
 
