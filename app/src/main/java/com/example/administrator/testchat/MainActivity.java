@@ -77,31 +77,33 @@ public class MainActivity extends AppCompatActivity {
                                                 .getDisplayName(),
                                         Toast.LENGTH_LONG )
                                         .show();
+                                userName = user.getDisplayName();
+                                if(userName != null) {
+                                    // Log.i("彡ﾟ◉ω◉ )つ--==*", userName);
+                                }else {
+                                    userEmail = user.getEmail();
+                                    //  Log.i("彡ﾟ◉ω◉ )つー>>)))", userEmail);
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(userEmail)
+                                            .build();
+                                    user.updateProfile(profileUpdates);
+                                    userName = user.getDisplayName();
+                                    //Log.i("彡ﾟ◉ω◉ )つー☆*", userName);
+                                }
+//取得使用者圖片-------------------------------------------------------------------------------------------------------------------------
+                                if (user.getPhotoUrl() != null) {
+                                    userPhotpUrl = user.getPhotoUrl().toString();
+                                    //  Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
+                                }else{
+                                    //如果沒有就給預設圖片
+                                    // userPhotpUrl = "https://firebasestorage.googleapis.com/v0/b/teststorage-32724.appspot.com/o/Photos%2F93137?alt=media&token=0794baad-c875-45ca-8dc5-92cce5766455";
+                                    //Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
+                                }
                             }
                         }
                     };
-                        userName = user.getDisplayName();
-                        if(userName != null) {
-                           // Log.i("彡ﾟ◉ω◉ )つ--==*", userName);
-                        }else {
-                            userEmail = user.getEmail();
-                          //  Log.i("彡ﾟ◉ω◉ )つー>>)))", userEmail);
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(userEmail)
-                                    .build();
-                            user.updateProfile(profileUpdates);
-                            userName = user.getDisplayName();
-                            //Log.i("彡ﾟ◉ω◉ )つー☆*", userName);
-                        }
-//取得使用者圖片-------------------------------------------------------------------------------------------------------------------------
-                            if (user.getPhotoUrl() != null) {
-                                userPhotpUrl = user.getPhotoUrl().toString();
-                              //  Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
-                            }else{
-                            //如果沒有就給預設圖片
-                               // userPhotpUrl = "https://firebasestorage.googleapis.com/v0/b/teststorage-32724.appspot.com/o/Photos%2F93137?alt=media&token=0794baad-c875-45ca-8dc5-92cce5766455";
-                                //Log.i("༼つಠ益ಠ༽つ ─=≡ΣO))", userPhotpUrl);
-                            }
+
+
 
 
 //發送訊息按鈕----------------------------------------------------------------------------------------------------------------------
