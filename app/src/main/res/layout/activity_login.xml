@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_weight="1"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
+            app:srcCompat="@drawable/glogo" />
 
     </LinearLayout>
 

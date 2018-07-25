@@ -4,16 +4,16 @@
 
     <item
         android:id="@+id/menu_edit_name"
-        android:title="Edit name" />
+        android:title="編輯暱稱" />
     <item
         android:id="@+id/menu_edit_password"
-        android:title="Change Password" />
+        android:title="更改密碼" />
     <item
         android:id="@+id/user_item"
-        android:title="User Item"
+        android:title="成員名單"
         app:showAsAction="never" />
     <item
         android:id="@+id/menu_sign_out"
-        android:title="Sign out"
+        android:title="登出"
         app:showAsAction="never" />
 </menu>
