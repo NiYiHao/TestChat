@@ -23,8 +23,9 @@
             android:layout_height="62dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:background="@drawable/inputbutton"
             android:clickable="true"
-            android:text="發送" />
+            android:textSize="12dp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="wrap_content"
