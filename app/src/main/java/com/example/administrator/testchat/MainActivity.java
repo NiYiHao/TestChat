@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String userName;
     private String userEmail;
+    private String UserEmail;
     //OnCreate----------------------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 //OnCreate程式區----------------------------------------------------------------------------------------------------------------------
 //Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
         auth = FirebaseAuth.getInstance();
+        fireDB = FirebaseDatabase.getInstance();
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -90,10 +92,8 @@ public class MainActivity extends AppCompatActivity {
                         //Log.i("彡ﾟ◉ω◉ )つー☆*", userName);
 
                     }
-                    fireDB = FirebaseDatabase.getInstance();
-                        String UserEmail =userEmail.replace( ".","_" );
-
-                        fireDB.getReference( "user" ).child( UserEmail ).setValue( new ChatMessage( null, auth.getCurrentUser().getDisplayName() ) );
+                    UserEmail =userEmail.replace( ".","_" );
+                    fireDB.getReference( "user" ).child( UserEmail ).setValue( new ChatMessage( null, auth.getCurrentUser().getDisplayName() ) );
 
                 }
 
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                         EditText input = (EditText) findViewById( R.id.input );
                         // Read the input field and push a new instance
                         // of ChatMessage to the Firebase database
-                        FirebaseDatabase.getInstance()
+                        fireDB
                                 .getReference( "contacts" )
                                 .push()
                                 .setValue( new ChatMessage( input.getText().toString(),
@@ -173,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                         "Successfully signed in. Welcome!",
                         Toast.LENGTH_LONG )
                         .show();
+                fireDB.getReference( "user" ).child( UserEmail ).setValue( new ChatMessage( null, auth.getCurrentUser().getDisplayName() ) );
                 displayChatMessages();
             } else {
                 Toast.makeText( this,
@@ -227,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()){
                                             Toast.makeText(MainActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                            fireDB.getReference( "user" ).child( UserEmail ).setValue( new ChatMessage( null, auth.getCurrentUser().getDisplayName() ) );
                                         }else {
                                             Toast.makeText(MainActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
                                         }
