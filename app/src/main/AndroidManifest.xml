@@ -27,16 +27,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
-        <meta-data android:name="comfacebook.sdk.ApplicationId"
-            android:value="@string/facebook_application_id"/>
-        <activity android:name="com.facebook.FacebookActivity"
+        <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="comfacebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"/>
+            android:label="@string/app_name" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"/>
-
+            android:label="@string/title_activity_login" />
+        <activity android:name=".UserActivity"></activity>
     </application>
 
 </manifest>

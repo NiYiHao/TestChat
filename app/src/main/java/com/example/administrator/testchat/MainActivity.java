@@ -257,6 +257,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).show();
             break;
+            case R.id.user_item:
+                Intent i = new Intent( this,UserActivity.class );
+                startActivity( i );
+                finish();
+                break;
         }
         return true;
     }
