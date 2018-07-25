@@ -45,11 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
-    private FirebaseDatabase fireBD;
+    private FirebaseDatabase fireDB;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private String userPhotpUrl;
-    private Bitmap userPic;
     private String userName;
     private String userEmail;
     //OnCreate----------------------------------------------------------------------------------------------------------------------
@@ -78,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG )
                             .show();
                     userName = user.getDisplayName();
+                    userEmail = user.getEmail();
                     if (userName != null) {
                         // Log.i("彡ﾟ◉ω◉ )つ--==*", userName);
                     } else {
@@ -89,7 +88,10 @@ public class MainActivity extends AppCompatActivity {
                         user.updateProfile( profileUpdates );
                         userName = user.getDisplayName();
                         //Log.i("彡ﾟ◉ω◉ )つー☆*", userName);
+
                     }
+                    fireDB = FirebaseDatabase.getInstance();
+                    fireDB.getReference( "user" ).child( userName ).setValue( new ChatMessage( null,auth.getCurrentUser().getDisplayName() ) );
                 }
 
 //發送訊息按鈕----------------------------------------------------------------------------------------------------------------------
@@ -105,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
                                 .getReference( "contacts" )
                                 .push()
                                 .setValue( new ChatMessage( input.getText().toString(),
-                                        user
-                                                .getDisplayName() )
+                                        user.getDisplayName() )
                                 );
                         // Clear the input
                         input.setText( "" );
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         };
         displayChatMessages();
     }
+
             //顯示訊息區----------------------------------------------------------------------------------------------------------------------
             private void displayChatMessages() {
                 ListView listOfMessages = (ListView) findViewById( R.id.list_of_messages );
