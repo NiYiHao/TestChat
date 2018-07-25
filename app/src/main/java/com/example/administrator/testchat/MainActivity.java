@@ -91,7 +91,10 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     fireDB = FirebaseDatabase.getInstance();
-                    fireDB.getReference( "user" ).child( userName ).setValue( new ChatMessage( null,auth.getCurrentUser().getDisplayName() ) );
+                        String UserEmail =userEmail.replace( ".","_" );
+
+                        fireDB.getReference( "user" ).child( UserEmail ).setValue( new ChatMessage( null, auth.getCurrentUser().getDisplayName() ) );
+
                 }
 
 //發送訊息按鈕----------------------------------------------------------------------------------------------------------------------
