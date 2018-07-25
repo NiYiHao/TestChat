@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.user_item:
                 Intent i = new Intent( this,UserActivity.class );
                 startActivity( i );
-                finish();
+                fireDB.getReference( "user" ).child( UserEmail ).setValue( new ChatMessage( null, auth.getCurrentUser().getDisplayName() ) );
                 break;
         }
         return true;
