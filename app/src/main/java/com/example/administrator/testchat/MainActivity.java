@@ -62,8 +62,13 @@ public class MainActivity extends AppCompatActivity {
 //資料設定區----------------------------------------------------------------------------------------------------------------------
         listView = findViewById( R.id.list_of_messages );
         toolbar = findViewById(R.id.mainToolbar);
-        setSupportActionBar(toolbar);
 
+
+//toolbar設定區----------------------------------------------------------------------------------------------------------------------
+
+        toolbar.setLogo(R.drawable.title);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
 //OnCreate程式區----------------------------------------------------------------------------------------------------------------------
 //Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
         auth = FirebaseAuth.getInstance();
@@ -240,6 +245,12 @@ public class MainActivity extends AppCompatActivity {
                                 });
                             }
                         })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
                         .show();
             break;
             case  R.id.menu_edit_password:
@@ -261,12 +272,18 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
                 }).show();
             break;
             case R.id.user_item:
                 Intent i = new Intent( this,UserActivity.class );
                 startActivity( i );
                 fireDB.getReference( "user" ).child( UserEmail ).setValue( new ChatMessage( null, auth.getCurrentUser().getDisplayName() ) );
+
                 break;
         }
         return true;

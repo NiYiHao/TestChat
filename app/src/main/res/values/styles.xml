@@ -9,6 +9,6 @@
     </style>
 
     <style name="myAppTheme" parent="AppTheme" >
-        <item name="android:textColorPrimary">@color/colorAccent</item>
+
     </style>
 </resources>

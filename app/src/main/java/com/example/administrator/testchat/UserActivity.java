@@ -33,6 +33,10 @@ public class UserActivity extends AppCompatActivity {
         setContentView( R.layout.activity_user );
 //----------------------------------------------------------------------------------------------------------------------
         toolbar = findViewById(R.id.userToolbar);
+
+//----------------------------------------------------------------------------------------------------------------------
+        toolbar.setTitle("");
+        toolbar.setLogo(R.drawable.title);
         setSupportActionBar(toolbar);
 //----------------------------------------------------------------------------------------------------------------------
         Useritem();
@@ -83,9 +87,9 @@ public class UserActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.back:
-                Intent i = new Intent( );
-                i.setClass( this,MainActivity.class );
-                startActivity( i );
+//                Intent i = new Intent( );
+//                i.setClass( this,MainActivity.class );
+//                startActivity( i );
                 finish();
                 break;
         }

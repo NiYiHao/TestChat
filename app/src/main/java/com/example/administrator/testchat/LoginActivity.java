@@ -96,8 +96,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        getSupportActionBar().hide(); //隱藏標題
-        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN); //隱藏狀態
+//        getSupportActionBar().hide(); //隱藏標題
+//        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN); //隱藏狀態
         setContentView( R.layout.activity_login );
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById( R.id.email );
