@@ -13,8 +13,8 @@ public class startActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        getSupportActionBar().hide(); //隱藏標題
-        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN); //隱藏狀態
+//        getSupportActionBar().hide(); //隱藏標題
+//        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN); //隱藏狀態
         setContentView( R.layout.activity_start );
         logo = findViewById( R.id.Logo );
         Animation fadein = AnimationUtils.loadAnimation(this,R.anim.fadein);

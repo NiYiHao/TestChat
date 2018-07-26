@@ -18,16 +18,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 public class UserActivity extends AppCompatActivity {
+//----------------------------------------------------------------------------------------------------------------------
+//宣告區----------------------------------------------------------------------------------------------------------------------
     private FirebaseAuth auth;
     private FirebaseDatabase fireDB;
     private ChatMessage model;
     private FirebaseListAdapter<ChatMessage> adapter;
+    private android.support.v7.widget.Toolbar toolbar;
+
+//----------------------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_user );
+//----------------------------------------------------------------------------------------------------------------------
+        toolbar = findViewById(R.id.userToolbar);
+        setSupportActionBar(toolbar);
+//----------------------------------------------------------------------------------------------------------------------
         Useritem();
     }
+//----------------------------------------------------------------------------------------------------------------------
     private void Useritem() {
         ListView listofuser = (ListView) findViewById( R.id.listOfUser );
         Query query = FirebaseDatabase.getInstance().getReference( "user" );
@@ -50,7 +60,7 @@ public class UserActivity extends AppCompatActivity {
         };
         listofuser.setAdapter( adapter );
     }
-
+//----------------------------------------------------------------------------------------------------------------------
     @Override
     protected void onStart() {
         super.onStart();
@@ -62,7 +72,7 @@ public class UserActivity extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
     }
-
+//----------------------------------------------------------------------------------------------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate( R.menu.menu_name_item,menu );

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ChatMessage model;
     private ListView listView;
     private Button fab;
+    private android.support.v7.widget.Toolbar toolbar;
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
 //資料設定區----------------------------------------------------------------------------------------------------------------------
         listView = findViewById( R.id.list_of_messages );
+        toolbar = findViewById(R.id.mainToolbar);
+        setSupportActionBar(toolbar);
 
 //OnCreate程式區----------------------------------------------------------------------------------------------------------------------
 //Firebase確認使用者認證----------------------------------------------------------------------------------------------------------------------
